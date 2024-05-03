@@ -8,13 +8,15 @@ def main():
     while True:
         client_socket, _ = server_socket.accept()
         print("Connected by", client_socket.getpeername())
-        response = "+PONG\r\n"
-        data = client_socket.recv(1024).decode().strip()
-        client_socket.sendall(response.encode())
-        # if not data:
-        #     break
 
-    client_socket.close()
+        while True:
+            data = client_socket.recv(1024).decode().strip()
+            if not data:
+                break
+            response = "+PONG\r\n"
+            client_socket.sendall(response.encode())
+
+        client_socket.close()
     server_socket.close()
 
 
