@@ -11,8 +11,8 @@ def main():
         response = "+PONG\r\n"
         data = client_socket.recv(1024).decode().strip()
         client_socket.sendall(response.encode())
-        if not data:
-            break
+        # if not data:
+        #     break
 
     client_socket.close()
     server_socket.close()
