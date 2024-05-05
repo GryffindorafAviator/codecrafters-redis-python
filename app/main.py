@@ -8,7 +8,7 @@ def handle_client(client_socket):
         data = client_socket.recv(1024).decode("utf-8").strip()
         if not data:
             break
-        data_arr = data.split('/r/n')
+        data_arr = data.split('\r\n')
         print(data_arr)
         cmd = data_arr[2].upper()
         if cmd == "ECHO":
