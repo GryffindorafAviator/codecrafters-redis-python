@@ -2,19 +2,16 @@ import socket
 import threading
 
 
-def parse_data(data):
-    data_arr = data.split('/r/n')
-    return data_arr[2].upper(), data_arr[4]
-
-
 def handle_client(client_socket):
     print("Connected by", client_socket.getpeername())
     while True:
         data = client_socket.recv(1024).decode().strip()
         if not data:
             break
-        cmd, msg = parse_data(data)
+        data_arr = data.split('/r/n')
+        cmd = data_arr[2]
         if cmd == "ECHO":
+            msg = data_arr[4]
             response = f"${len(msg)}\r\n{msg}\r\n"
         else:
             response = "+PONG\r\n"
