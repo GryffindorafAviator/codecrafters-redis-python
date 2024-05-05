@@ -5,7 +5,7 @@ import threading
 def handle_client(client_socket):
     print("Connected by", client_socket.getpeername())
     while True:
-        data = client_socket.recv(1024).decode().strip()
+        data = client_socket.recv(1024).decode("utf-8").strip()
         if not data:
             break
         data_arr = data.split('/r/n')
