@@ -17,10 +17,13 @@ def handle_client(client_socket):
             msg = data_arr[4]
             response = f"${len(msg)}\r\n{msg}\r\n"
         elif cmd == "SET":
+            key = data_arr[4]
             value = data_arr[6]
             if len(data_arr) > 7:
                 expiry = int(data_arr[10])
-                database[data_arr[4]] = (value, time.time() + expiry / 1000)
+                database[key] = (value, time.time() + expiry / 1000)
+            else:
+                database[key] = value
             response = "+OK\r\n"
             print(database)
         elif cmd == "GET":
