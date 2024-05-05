@@ -30,7 +30,7 @@ def handle_client(client_socket):
             key = data_arr[4]
             if key in database:
                 print(database[key])
-                if len(database[key]) > 1:
+                if isinstance(database[key], tuple):
                     value, expire = database[key]
                     if time.time() < expire:
                         response = f"${len(value)}\r\n{value}\r\n"
