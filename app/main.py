@@ -22,6 +22,7 @@ def handle_client(client_socket):
                 expiry = int(data_arr[10])
                 database[data_arr[4]] = (value, time.time() + expiry / 1000)
             response = "+OK\r\n"
+            print(database)
         elif cmd == "GET":
             key = data_arr[4]
             if key in database:
