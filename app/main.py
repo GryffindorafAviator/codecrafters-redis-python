@@ -9,7 +9,6 @@ def handle_client(client_socket):
         if not data:
             break
         data_arr = data.split('\r\n')
-        print(data_arr)
         cmd = data_arr[2].upper()
         if cmd == "ECHO":
             msg = data_arr[4]
