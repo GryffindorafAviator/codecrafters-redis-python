@@ -1,6 +1,8 @@
 import socket
 import threading
 
+database = {}
+
 
 def handle_client(client_socket):
     print("Connected by", client_socket.getpeername())
@@ -13,6 +15,15 @@ def handle_client(client_socket):
         if cmd == "ECHO":
             msg = data_arr[4]
             response = f"${len(msg)}\r\n{msg}\r\n"
+        elif cmd == "SET":
+            database[data_arr[4]] = data_arr[6]
+            response = "+OK\r\n"
+        elif cmd == "GET":
+            if data_arr[4] in database:
+                value = database[data_arr[4]]
+                response = f"${len(value)}\r\n{value}\r\n"
+            else:
+                response = "$-1\r\n"
         else:
             response = "+PONG\r\n"
         client_socket.sendall(response.encode())
