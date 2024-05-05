@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 database = {}
 
@@ -16,12 +17,19 @@ def handle_client(client_socket):
             msg = data_arr[4]
             response = f"${len(msg)}\r\n{msg}\r\n"
         elif cmd == "SET":
-            database[data_arr[4]] = data_arr[6]
+            value = data_arr[6]
+            expiry = int(data_arr[10])
+            database[data_arr[4]] = (value, time.time() + expiry / 1000)
             response = "+OK\r\n"
         elif cmd == "GET":
-            if data_arr[4] in database:
-                value = database[data_arr[4]]
-                response = f"${len(value)}\r\n{value}\r\n"
+            key = data_arr[4]
+            if key in database:
+                value, expire = database[data_arr[4]]
+                if time.time() < expire:
+                    response = f"${len(value)}\r\n{value}\r\n"
+                else:
+                    del database[key]
+                    response = "$-1\r\n"
             else:
                 response = "$-1\r\n"
         else:
