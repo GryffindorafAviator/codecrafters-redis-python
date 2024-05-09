@@ -1,3 +1,4 @@
+import argparse
 import socket
 import threading
 import time
@@ -48,9 +49,9 @@ def handle_client(client_socket):
     client_socket.close()
 
 
-def main():
-    print("Logs from your program will appear here!")
-    server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
+def main(port=6379):
+    print(f"Logs from your program will appear here! Listening on port {port}")
+    server_socket = socket.create_server(("localhost", port), reuse_port=True)
     while True:
         client_socket, _ = server_socket.accept()
         client_thread = threading.Thread(target=handle_client, args=(client_socket,))
@@ -59,4 +60,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Run a Redis server")
+    parser.add_argument("--port", type=int, default=6379, help="Port number to listen on")
+    args = parser.parse_args()
+    main(args.port)
